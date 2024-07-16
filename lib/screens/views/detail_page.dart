@@ -17,11 +17,22 @@ class _DetailPageState extends State<DetailPage> {
   Color red = Colors.red;
   Color yellow = Colors.yellow;
   Color green = Colors.green;
+  int ingCount = 0;
+  int insCount = 0;
+
+  void calculateIng(Map<String, dynamic> elem) {
+    ingCount = 0;
+    insCount = 0;
+    elem['ingredients'].forEach((e) => ingCount++);
+    elem['instructions'].forEach((e) => insCount++);
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.sizeOf(context);
     Map<String, dynamic> food =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    calculateIng(food);
     return Scaffold(
       appBar: AppBar(
         title: Text(food['name']),
@@ -65,7 +76,7 @@ class _DetailPageState extends State<DetailPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  height: size.height * 0.2,
+                  height: size.height * 0.4,
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       image: NetworkImage(food['image']),
@@ -87,48 +98,24 @@ class _DetailPageState extends State<DetailPage> {
                   ),
                 ),
                 15.h,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.68,
-                      child: Text(
-                        textAlign: TextAlign.start,
-                        food['name'].toString().tCase,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
+                SizedBox(
+                  child: Text(
+                    textAlign: TextAlign.start,
+                    food['name'].toString().tCase,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    TextButton(
-                      onPressed: () {
-                        setState(() {
-                          if (!favoriteData.contains(food)) {
-                            favoriteData.add(food);
-                          } else {
-                            favoriteData.remove(food);
-                          }
-                        });
-                      },
-                      child: Icon(
-                        Icons.favorite,
-                        size: 25,
-                        color: (favoriteData.contains(food))
-                            ? Colors.red
-                            : Colors.black,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-                13.h,
+                10.h,
                 Row(
                   children: [
                     const Text(
                       'Difficulty : ',
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w500,
                         fontSize: 16,
                       ),
                     ),
@@ -155,7 +142,7 @@ class _DetailPageState extends State<DetailPage> {
                     const Text(
                       'Rating : ',
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w500,
                         fontSize: 16,
                       ),
                     ),
@@ -186,7 +173,7 @@ class _DetailPageState extends State<DetailPage> {
                     const Text(
                       'Meal Type : ',
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w500,
                         fontSize: 16,
                       ),
                     ),
@@ -205,9 +192,113 @@ class _DetailPageState extends State<DetailPage> {
                 Row(
                   children: [
                     const Text(
+                      'Ingredients : ',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16,
+                      ),
+                    ),
+                    Text(
+                      '${ingCount.toString().tCase}  ',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17,
+                      ),
+                    )
+                  ],
+                ),
+                13.h,
+                Row(
+                  children: [
+                    const Text(
+                      'Instructions : ',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16,
+                      ),
+                    ),
+                    Text(
+                      '${insCount.toString().tCase}  ',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17,
+                      ),
+                    )
+                  ],
+                ),
+                13.h,
+                Row(
+                  children: [
+                    const Text(
+                      'Servings : ',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16,
+                      ),
+                    ),
+                    Text(
+                      '${food['servings'].toString().tCase}  ',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17,
+                      ),
+                    )
+                  ],
+                ),
+                13.h,
+                Row(
+                  children: [
+                    const Text(
+                      'Calories Per Serving: ',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16,
+                      ),
+                    ),
+                    Text(
+                      '${food['caloriesPerServing'].toString().tCase} cal ',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17,
+                      ),
+                    )
+                  ],
+                ),
+                13.h,
+                Row(
+                  children: [
+                    const Text(
+                      'Tags : ',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: (food['tags'] as List<dynamic>)
+                            .map(
+                              (e) => Text(
+                                '${e} , ',
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            )
+                            .toList(),
+                      ),
+                    ),
+                  ],
+                ),
+                13.h,
+                Row(
+                  children: [
+                    const Text(
                       'Total Time : ',
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w500,
                         fontSize: 16,
                       ),
                     ),
@@ -232,12 +323,53 @@ class _DetailPageState extends State<DetailPage> {
                 ),
                 13.h,
                 SizedBox(
+                  width: size.width * 0.46,
+                  child: TextButton(
+                    onPressed: () {
+                      setState(() {
+                        if (!favoriteData.contains(food)) {
+                          favoriteData.add(food);
+                        } else {
+                          Navigator.of(context).pushNamed('favorite_Page');
+                        }
+                      });
+                    },
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.favorite,
+                          size: 25,
+                          color: (favoriteData.contains(food))
+                              ? Colors.red
+                              : Colors.black,
+                        ),
+                        8.w,
+                        Text(
+                          (favoriteData.contains(food))
+                              ? 'Go to Favorite'
+                              : 'Add To Favorite',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                13.h,
+                SizedBox(
                   width: size.width * 0.4,
                   child: TextButton(
                     onPressed: () {
                       if (!mealData.contains(food)) {
                         mealData.add(food);
                       }
+                      Navigator.of(context).pushNamed('meal_Page');
                     },
                     style: TextButton.styleFrom(
                       backgroundColor: Colors.lightBlue,
@@ -257,6 +389,37 @@ class _DetailPageState extends State<DetailPage> {
                             fontSize: 16,
                             color: Colors.white,
                           ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                13.h,
+                SizedBox(
+                  width: size.width * 0.42,
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.of(context)
+                          .pushNamed('recipe_Page', arguments: food);
+                    },
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.redAccent,
+                    ),
+                    child: Row(
+                      children: [
+                        const Text(
+                          'Start Cooking',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17,
+                            color: Colors.white,
+                          ),
+                        ),
+                        10.w,
+                        const Icon(
+                          Icons.arrow_forward_rounded,
+                          size: 17,
+                          color: Colors.white,
                         ),
                       ],
                     ),

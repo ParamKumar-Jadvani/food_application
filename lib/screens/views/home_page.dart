@@ -141,7 +141,6 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ],
                     ),
-                    // Difficulty, Meal Type, Rating, Add to Cart(Meal)
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

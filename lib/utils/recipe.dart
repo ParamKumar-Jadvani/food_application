@@ -1056,8 +1056,6 @@ List<Map<String, dynamic>> allRecipies = [
 List<Map> durationTime = allRecipies.map((e) {
   return {
     'id': e['id'],
-    'prepTimeMinutes': e['prepTimeMinutes'],
-    'cookTimeMinutes': e['cookTimeMinutes'],
     'totalTime': calculateTime(e['prepTimeMinutes'], e['cookTimeMinutes']),
   };
 }).toList();
